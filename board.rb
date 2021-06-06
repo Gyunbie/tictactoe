@@ -14,16 +14,19 @@ class Board
     @grid[pos[0] - 1][pos[1] - 1] == "_"
   end
 
-  def place_mark(pos, mark)
-    if !self.empty?(pos)
-      puts "Not an empty position."
-      return false
-    elsif !valid?(pos)
-      puts "Not a valid position."
-      return false
-    else
-      @grid[pos[0] - 1][pos[1] - 1] = mark
+  def legal_positions
+    arr = []
+    (1..@size).each do |row|
+      (1..@size).each do |col|
+        pos = [row, col]
+        arr << pos if valid?(pos) && empty?(pos)
+      end
     end
+    arr
+  end
+
+  def place_mark(pos, mark)
+    @grid[pos[0] - 1][pos[1] - 1] = mark
   end
 
   def print
