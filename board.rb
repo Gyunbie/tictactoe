@@ -1,10 +1,12 @@
 class Board
-  def initialize
-    @grid = Array.new(3) { Array.new(3, "_") }
+  def initialize(n)
+    @size = n
+    @size_index = @size - 1
+    @grid = Array.new(@size) { Array.new(@size, "_") }
   end
 
   def valid?(pos)
-    range = *(1..3)
+    range = *(1..@size)
     return range.include?(pos[0]) && range.include?(pos[1])
   end
 
@@ -23,37 +25,27 @@ class Board
   end
 
   def print
-    @grid.each do |row|
-      line = ""
-      row.each do |col|
-        line += col.to_s
-      end
-      puts line
-    end
+    puts @grid.map { |i| i.join("") }
   end
 
   def win_row?(mark)
-    @grid.each do |row|
-      return true if row == [mark, mark, mark]
+    @grid.any? do |row|
+      row.all?(mark)
     end
-    return false
   end
 
   def win_col?(mark)
-    (0..2).each do |col|
-      if @grid[0][col] == mark && @grid[1][col] == mark && @grid[2][col] == mark
-        return true
-      end
+    win = true
+    (0..@size_index).any? do |col|
+      (0..@size_index).all? { |row| @grid[row][col] == mark }
     end
-    return false
   end
 
   def win_diagonal?(mark)
-    if @grid[0][0] == mark && @grid[1][1] == mark && @grid[2][2] == mark ||
-      @grid[0][2] == mark && @grid[1][1] == mark && @grid[2][0] == mark
-      return true
-    end
-    return false
+    l_to_r = (0..@size_index).all? { |i| @grid[i][i] == mark }
+    r_to_l = (0..@size_index).all? { |i| @grid[0+i][@size_index-i] == mark }
+
+    l_to_r || r_to_l
   end
 
   def win?(mark)
