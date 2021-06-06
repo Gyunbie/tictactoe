@@ -35,18 +35,20 @@ class Game
 
   def play
     @board.print
-    place = @board.place_mark(@current_player.get_position(@legal_positions), @current_player.mark)
+    @board.place_mark(@current_player.get_position(@legal_positions), @current_player.mark)
     
     if @board.win?(@current_player.mark)
       @board.print
       puts "Congrats, #{@current_player.mark} wins!"
     else
       @legal_positions = @board.legal_positions
+
       if @legal_positions.empty?
         puts "Board is full! Creating a new board."
         @board = Board.new(@board_size)
         @legal_positions = @board.legal_positions
       end
+      
       switch_turn
       play
     end

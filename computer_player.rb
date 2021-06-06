@@ -7,6 +7,6 @@ class ComputerPlayer
 
   def get_position(legal_positions)
     puts "Computer plays."
-    pos = legal_positions.sample
+    legal_positions.sample
   end
 end

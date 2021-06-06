@@ -16,6 +16,7 @@ class Board
 
   def legal_positions
     arr = []
+
     (1..@size).each do |row|
       (1..@size).each do |col|
         pos = [row, col]
@@ -41,6 +42,7 @@ class Board
 
   def win_col?(mark)
     win = true
+    
     (0..@size_index).any? do |col|
       (0..@size_index).all? { |row| @grid[row][col] == mark }
     end
