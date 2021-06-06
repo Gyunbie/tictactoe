@@ -2,19 +2,16 @@ require_relative "board.rb"
 require_relative "human_player.rb"
 
 class Game
-  def initialize(player1_mark, player2_mark)
-    @player1 = HumanPlayer.new(player1_mark)
-    @player2 = HumanPlayer.new(player2_mark)
-    @current_player = @player1
+  def initialize(*player_marks)
+    @players = []
+    player_marks.each { |mark| @players << HumanPlayer.new(mark) }
+    @current_player = @players[0]
     @board = Board.new(get_board_size)
   end
 
   def switch_turn
-    if @current_player == @player1
-      @current_player = @player2
-    else
-      @current_player = @player1
-    end
+    @players.rotate!
+    @current_player = @players[0]
   end
 
   def get_board_size
@@ -29,7 +26,11 @@ class Game
 
   def play
     @board.print
-    @board.place_mark(@current_player.get_position, @current_player.mark)
+    place = @board.place_mark(@current_player.get_position, @current_player.mark)
+    
+    unless place
+      play
+    end
     
     if @board.win?(@current_player.mark)
       @board.print
@@ -41,5 +42,5 @@ class Game
   end
 end
 
-game = Game.new(:X, :O)
+game = Game.new(:X, :O, :A, :B)
 game.play

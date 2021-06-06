@@ -16,9 +16,11 @@ class Board
 
   def place_mark(pos, mark)
     if !self.empty?(pos)
-      raise "Not an empty position."
+      puts "Not an empty position."
+      return false
     elsif !valid?(pos)
-      raise "Not a valid position."
+      puts "Not a valid position."
+      return false
     else
       @grid[pos[0] - 1][pos[1] - 1] = mark
     end
